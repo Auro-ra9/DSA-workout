@@ -60,7 +60,7 @@ class BinarySearchTree {
     }
     if (cur.left !== null) {
       cur = cur.left;
-      while (cur.left !== null) cur = cur.left;
+      while (cur.right !== null) cur = cur.right;
       return cur.value;
     }
     return prev.value;
