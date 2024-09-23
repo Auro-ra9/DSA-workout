@@ -66,17 +66,17 @@ class BinarySearchTree {
     }
   }
   deleteNode(value) {
-    this.root = this.delete(this.root, value);
+    this.root = this.deleteHelper(this.root, value);
   }
-  delete(root, value) {
+  deleteHelper(root, value) {
     if (root === null) {
       return root;
     }
 
     if (value < root.value) {
-      root.left = this.delete(root.left, value);
+      root.left = this.deleteHelper(root.left, value);
     } else if (value > root.value) {
-      root.right = this.delete(root.right, value);
+      root.right = this.deleteHelper(root.right, value);
     } else {
       if (!root.left && !root.right) {
         return null;
@@ -88,7 +88,7 @@ class BinarySearchTree {
       }
 
       root.value = this.min(root.right);
-      root.right = this.delete(root.right, root.value);
+      root.right = this.deleteHelper(root.right, root.value);
 
     }
     return root;
