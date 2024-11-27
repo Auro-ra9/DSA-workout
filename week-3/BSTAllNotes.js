@@ -6,32 +6,36 @@ class Node {
   }
 }
 
-class Tree {
+class BinarySearchTree {
   constructor() {
     this.root = null;
   }
 
+  isEmpty() {
+    return this.root === null;
+  }
+
   insert(value) {
-    const node = new Node(value);
-    if (this.root === null) {
-      this.root = node;
+    let newNode = new Node(value);
+    if (this.isEmpty()) {
+      this.root = newNode;
     } else {
-      this.insertHelper(this.root, node);
+      this.insertNode(this.root, newNode);
     }
   }
 
-  insertHelper(root, node) {
-    if (node.value < root.value) {
+  insertNode(root, newNode) {
+    if (newNode.value < root.value) {
       if (root.left === null) {
-        root.left = node;
+        root.left = newNode;
       } else {
-        this.insertHelper(root.left, node);
+        this.insertNode(root.left, newNode);
       }
     } else {
       if (root.right === null) {
-        root.right = node;
+        root.right = newNode;
       } else {
-        this.insertHelper(root.right, node);
+        this.insertNode(root.right, newNode);
       }
     }
   }
@@ -49,23 +53,72 @@ class Tree {
       }
     }
   }
+  //traverse
+  preOrder(root) {
+    if (root) {
+      console.log(root.value);
+      this.preOrder(root.left);
+      this.preOrder(root.right);
+    }
+  }
+  inOrder(root) {
+    if (root) {
+      this.inOrder(root.left);
+      console.log(root.value);
+      this.inOrder(root.right);
+    }
+  }
+  postOrder(root) {
+    if (root) {
+      this.postOrder(root.left);
+      this.postOrder(root.right);
+      console.log(root.value);
+    }
+  }
 
+  levelOrder() {
+    const queue = [];
+    queue.push(this.root);
+    while (queue.length) {
+      let cur = queue.shift();
+      console.log(cur.value);
+      if (cur.left) {
+        queue.push(cur.left);
+      }
+      if (cur.right) {
+        queue.push(cur.right);
+      }
+    }
+  }
+  findSecondLargest(root) {
+    let prev = null;
+    let cur = root;
+    while (cur.right !== null) {
+      prev = cur;
+      cur = cur.right;
+    }
+    if (cur.left !== null) {
+      cur = cur.left;
+      while (cur.right !== null) cur = cur.right;
+      return cur.value;
+    }
+    return prev.value;
+  }
+
+  max(root) {
+    if (root.right !== null) {
+      return this.max(root.right);
+    } else {
+      return root.value;
+    }
+  }
   min(root) {
-    if (!root.left) {
+    if (root.left === null) {
       return root.value;
     } else {
       return this.min(root.left);
     }
   }
-
-  max(root) {
-    if (!root.right) {
-      return root.value;
-    } else {
-      return this.max(root.right);
-    }
-  }
-
   delete(value) {
     this.root = this.deleteHelper(this.root, value);
   }
@@ -95,7 +148,6 @@ class Tree {
     }
     return root;
   }
-
   height(root) {
     if (root === null) {
       return 0;
@@ -110,14 +162,13 @@ class Tree {
     if (root.value === target) {
       return depth;
     }
-    
-    if (target<root.value) {
+
+    if (target < root.value) {
       return depth(root.left, target, depth + 1);
     }
 
     return depth(root.right, target, depth + 1);
   }
-  
 
   closestValue(root, target) {
     let closest = root.value;
@@ -168,18 +219,26 @@ class Tree {
   }
 }
 
-const bst = new Tree();
-
+let bst = new BinarySearchTree();
+console.log("is this bst empty?", bst.isEmpty());
 bst.insert(10);
 bst.insert(5);
 bst.insert(15);
 bst.insert(3);
 bst.insert(7);
-
+console.log(bst.search(bst.root, 10));
+console.log("Pre order traversal:");
+bst.preOrder(bst.root);
+console.log("In order traversal:");
+bst.inOrder(bst.root);
+console.log("Post order traversal:");
+bst.postOrder(bst.root);
+bst.levelOrder();
+console.log(bst.findSecondLargest(bst.root));
+console.log(bst.max(bst.root));
+console.log(bst.min(bst.root));
 console.log("height:", bst.height(bst.root));
 console.log("Is valid BST:", bst.isValidBST(bst.root));
 console.log("Closest value to 6:", bst.closestValue(bst.root, 6));
 console.log("Second largest value:", bst.findSecondLargest());
 bst.delete(5);
-console.log("Is valid BST after deletion:", bst.isValidBST(bst.root));
-console.log("height after deletion:", bst.height(bst.root));

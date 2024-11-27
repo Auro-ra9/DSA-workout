@@ -57,20 +57,19 @@ class Graph {
   depth(start) {
     let result = [];
     let visited = new Set();
-    let adjacentList = this.adjacentList;
 
-    function bfs(vertex) {
+    function dfs(vertex) {
       if (!vertex) return;
       visited.add(vertex);
       result.push(vertex);
 
-      adjacentList[vertex].forEach((neighbor) => {
+      this.adjacentList[vertex].forEach((neighbor) => {
         if (!visited.has(neighbor)) {
-          bfs(neighbor);
+          dfs(neighbor);
         }
       });
     }
-    bfs(start);
+    dfs(start);
     return result;
   }
 
@@ -128,7 +127,7 @@ class Graph {
 
     return path[0] === start ? path : [];
   }
-
+//by key's heaviness
   findSecondLargestNode() {
     if (!this.adjacentList) {
       return "nothing to return ";
@@ -141,6 +140,20 @@ class Graph {
       return "there is no second largest node";
     }
     return vertex[1];
+  }
+
+  NodewithSecondLargestDegree(){
+    let degrees= [];
+    for(let vertex in this.adjacentList){
+      degrees.push([vertex, this.getDegree(vertex)]);
+    }
+
+    degrees.sort((a,b)=>b[1]-a[1]);
+    if(degrees.length<2){
+      return 'there is no second largest';
+    }else{
+      return degrees[1][0]
+    }
   }
   getDegree(vertex) {
     if (!this.adjacentList[vertex]) {
@@ -164,10 +177,11 @@ graph.insertEdge("A", "D");
 graph.insertEdge("D", "F");
 graph.insertEdge("Z", "B");
 graph.insertEdge("B", "Y");
-graph.insertEdge("Y", "Z");
+graph.insertEdge("Y", "M");
 graph.display();
-console.log(graph.bfs("A"));
+// console.log(graph.bfs("A"));
 console.log(graph.depth("A"));
-console.log(graph.findSecondLargestNode());
+console.log(graph.NodewithSecondLargestDegree())
+// console.log(graph.findSecondLargestNode());
 
-console.log(graph.getDegree("Z"));
+// console.log(graph.getDegree("Z"));

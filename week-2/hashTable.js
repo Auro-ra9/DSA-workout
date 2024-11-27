@@ -1,21 +1,21 @@
 // Average time complexity is constant
-// worst time coplexity is linear
+// worst time complexity is linear
 //Hash tables are a fine solution when solving problems
 class HashTable {
   constructor(size) {
     this.table = new Array(size);
     this.size = size;
   }
-  
-  resize(newSize){
-    let oldTable=this.table;
-    this.size=newSize;
-    this.table=new Array(newSize);
 
-    for(let bucket of oldTable){
-      if(bucket){
-        for(const [key,value] of bucket){
-          this.set(key,value);
+  resize(newSize) {
+    let oldTable = this.table;
+    this.size = newSize;
+    this.table = new Array(newSize);
+
+    for (let bucket of oldTable) {
+      if (bucket) {
+        for (const [key, value] of bucket) {
+          this.set(key, value);
         }
       }
     }
@@ -36,7 +36,7 @@ class HashTable {
     if (!bucket) {
       this.table[index] = [[key, value]];
     } else {
-      //item of 0 here means key and item of 1 means the value, if we found the same key them replace the value
+      //item of 0 here means key. item of 1 means the value, if we found the same key them replace the value
       const sameKeyItem = bucket.find((item) => item[0] === key);
       if (sameKeyItem) {
         sameKeyItem[1] = value;

@@ -1,121 +1,101 @@
-//bubble sort
-function bubbleSort(arr) {
-  let swapped;
-  do {
-    swapped = false;
-    for (let i = 0; i < arr.length - 1; i++) {
-      if (arr[i] > arr[i + 1]) {
-        [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
-        swapped = true;
-      }
-    }
-  } while (swapped);
-  return arr;
-}
-let arr = [12, 2, 12, 4, 1, 4, -10];
-console.log(bubbleSort(arr));
+//find some of the array using recursion
 
-//insertion sort
-function insertionSort(arr) {
-  for (let i = 1; i < arr.length; i++) {
-    let number = arr[i];
-    let j = i - 1;
-    while (j >= 0 && number < arr[j]) {
-      arr[j + 1] = arr[j];
-      j = j - 1;
-    }
-    arr[j + 1] = number;
-  }
-  return arr;
+function sum(arr){
+    if(arr.length===0)return 0
+    return arr[0]+sum(arr.slice(1));
 }
-let arr1 = [12, 22, 122, 24, 12, 42, 10];
-console.log(insertionSort(arr1));
+let array= [1,3,4,5,2,1,5]
+console.log(sum(array))
 
-//quick sort
+function alt(arr){
+    if(arr.length===0)return 0
+    let ele= arr.pop()
+    return ele+ alt(arr)
+}
+console.log(alt(array))
+
+
+//sorting algorithms
+function mergeSort(arr){
+    if(arr.length<2)return arr;
+    let mid= Math.floor(arr.length/2); 
+    let left= arr.slice(0,mid);
+    let right= arr.slice(mid);
+    return merge(mergeSort(left),mergeSort(right));
+}
+function merge(l,r){
+    let sorted=[];
+    while(l.length&& r.length){
+        if(l[0]<r[0]){
+            sorted.push(l.shift())
+        }else{
+            sorted.push(r.shift())
+            
+        }
+    }
+    return [...sorted, ...l,...r];
+}
+
 function quickSort(arr){
-    if(arr.length<2){
-        return arr
-    }
-    let pivot=arr[arr.length-1]
+    if(arr.length<2)return arr;
     let left=[]
     let right=[]
-    for(let i=0; i<arr.length-1;i++){
+    let pivot=arr[arr.length-1];
+    for(let i=0; i<arr.length-1; i++){
         if(arr[i]<pivot){
             left.push(arr[i])
         }else{
-            right.push(arr[i])
+            right.push(arr[i]);
         }
     }
-    return [...quickSort(left),pivot, ...quickSort(right)]
+    
+    return [...quickSort(left), pivot, ...quickSort(right)]
 }
-let arr2 = [10, 20, 90, 40, 13, 4, 100];
-console.log(quickSort(arr2));//[4,10,13,20,40,90,100];
 
-
-// hash table defined size(static array so)
-class HashTable {
-    constructor(size) {
-        this.table = new Array(size);
-        this.size = size;
-  }
-  hash(key) {
-      let total = 0;
-      for (let i = 0; i < key.length; i++) {
-          total += key.charCodeAt(i);
-        }
-        return total % this.size;
-    }
-    set(key, value) {
-        let index = this.hash(key);
-        let bucket = this.table[index];
-        if (!bucket) {
-            this.table[index] = [[key, value]];
-        } else {
-            let sameKeyItem = bucket.find((items) => items[0] === key);
-      if (sameKeyItem) {
-          sameKeyItem[1] = value;
-        } else {
-            bucket.push([key, value]);
-        }
-    }
-}
-  get(key) {
-      let index = this.hash(key);
-      let bucket = this.table[index];
-      if (bucket) {
-          let sameKeyItem = bucket.find((item) => item[0] === key);
-          if (sameKeyItem) {
-              return sameKeyItem[1];
+function bubbleSort(arr){
+    let swapped;
+    do{
+        swapped= false;
+        for(let i=0; i<arr.length-1; i++){
+            if(arr[i+1]<arr[i]){
+                [arr[i],arr[i+1]]=[arr[i+1],arr[i]];
+                swapped=true;
             }
         }
-        return undefined;
-    }
-    remove(key) {
-        let index = this.hash(key);
-        let bucket = this.table[index];
-        if (bucket) {
-            let sameKeyItem = bucket.find((item) => item[0] === key);
-            if (sameKeyItem) {
-                bucket.splice(bucket.indexOf(sameKeyItem), 1);
-            }
-        }
-    }
-    print() {
-        for (let i = 0; i < this.table.length; i++) {
-            if (this.table[i]) {
-                console.log(i, this.table[i]);
-      }
-    }
-  }
+    }while(swapped);
+    return arr
 }
 
-const table = new HashTable(10);
-table.set("name", "Bruce");
-table.set("age", 25);
-table.print();
-console.log(table.get("name"));
-table.set("mane", "Clark");
-table.set("name", "Diana");
-console.log(table.get("mane"));
-table.remove("name");
-table.print();
+function insertionSort(arr){
+    for(let i=1; i<arr.length; i++){
+        let cur= arr[i];
+        let j= i-1;
+        while(j>=0 && arr[j]>cur){
+            arr[j+1]=arr[j];
+            j--
+        }
+        arr[j+1]= cur;
+        return arr;
+    }
+}
+function selectionSort(arr){
+    for(let i=0; i<arr.length; i++){
+        let min= i;
+        for(let j= i+1; j<arr.length; j++){
+            if(arr[j]<arr[min]){
+                min= j
+            }
+        }
+        if(i!==min){
+            [arr[min],arr[i]]=[arr[i],arr[min]];
+        }
+    }
+    return arr;
+}
+
+let arr= [1,234,421,232,14,242,53,12];
+console.log(mergeSort(arr))
+console.log(quickSort(arr))
+console.log(bubbleSort(arr))
+console.log(insertionSort(arr))
+console.log(selectionSort(arr))

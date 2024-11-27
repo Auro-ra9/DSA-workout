@@ -4,7 +4,7 @@ function insertionSort(arr) {
   for (let i = 1; i < arr.length; i++) {
     let selectedNumber = arr[i];
     let leftToBeSorted = i - 1;
-    while (leftToBeSorted >= 0 && selectedNumber > arr[leftToBeSorted]) {
+    while (leftToBeSorted >= 0 &&  arr[leftToBeSorted]< selectedNumber) {
       arr[leftToBeSorted + 1] = arr[leftToBeSorted];
       leftToBeSorted = leftToBeSorted - 1;
     }
@@ -17,13 +17,13 @@ console.log(insertionSort(arr1));
 
 function insertionSort(arr) {
   for (let i = 1; i < arr.length; i++) {
-    let number = arr[i];
+    let current = arr[i];
     let j = i - 1;
-    while (j >= 0 && number < arr[j]) {
+    while (j >= 0 &&  arr[j]> current ) {
       arr[j + 1] = arr[j];
-      j = j - 1;
+      j--;
     }
-    arr[j + 1] = number;
+    arr[j + 1] = current;
   }
   return arr;
 }
